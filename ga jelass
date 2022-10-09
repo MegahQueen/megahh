@@ -15,6 +15,22 @@ $fak    = "";
 $sukses = "";
 $error  = "";
 
+if(isset($_GET['op'])){
+    $_op = $_GET['op'];
+}else {
+    $op = "";
+}
+
+if($op == 'update'){
+    $id     =$_GET['id'];
+    $sql1   ="select * from mahasiswa where id = '$id'";
+    $q1     = mysqli_query($koneksi,$sql1);
+    $r1     = mysqli_fetch_array($q1);
+    $nim    = $r1['nim'];
+    $nama   = $r1['nama'];
+    $alamat = $r1['alamat'];
+    $fak    = $r1['fak'];
+}
 if (isset($_POST['simpan'])) {
     $nim    = $_POST['nim'];
     $nama   = $_POST['nama'];
@@ -65,17 +81,17 @@ if (isset($_POST['simpan'])) {
                 if ($error) {
                 ?>
                     <div class="alert alert-danger" role="alert">
-                        <?php echo $error?>
+                        <?php echo $error ?>
                     </div>
 
                 <?php
                 }
                 ?>
-                 <?php
+                <?php
                 if ($sukses) {
                 ?>
                     <div class="alert alert-success" role="alert">
-                        <?php echo $sukses?>
+                        <?php echo $sukses ?>
                     </div>
 
                 <?php
@@ -133,30 +149,36 @@ if (isset($_POST['simpan'])) {
                             <th scope="col">Fakultas</th>
                             <th scope="col">Aksi</th>
                         </tr>
-                        <tbody>
-                            <?php
-                            $sql2   = "select * from mahasiswa order by id desc";
-                            $q2     = mysqli_connect($koneksi,$sql2);
-                            while($r2 = mysqli_fetch_array($q2)){
-                                $id..........=$r2['id'];
-                                $nim.........=$r2['nim'];
-                                $nama........=$r2['nama'];
-                                $alamat......=$r2['alamat'];
-                                $fakultas.....=$r2['fak'];
+                    <tbody>
+                        <?php
+                        $sql2   = "select * from mahasiswa order by id desc";
+                        $q2     = mysqli_query($koneksi, $sql2);
+                        $urut   = 1;
+                        while ($r2 = mysqli_fetch_array($q2)) {
+                            $id     = $r2['id'];
+                            $nim    = $r2['nim'];
+                            $nama   = $r2['nama'];
+                            $alamat = $r2['alamat'];
+                            $fak    = $r2['fak'];
+                        ?>
+                            <tr>
+                                <th scope="row"><?php echo $urut++ ?></th>
+                                <td scope="row"><?php echo $nim ?></td>
+                                <td scope="row"><?php echo $nama ?></td>
+                                <td scope="row"><?php echo $alamat ?></td>
+                                <td scope="row"><?php echo $fak ?></td>
+                                <td scope="row">
+                                    <a href="index.php?op=update&id=<?php echo $id ?>"><button type="button" class="btn btn-success">Update</button></a>
+                                   
+                                    <button type="button" class="btn btn-danger">Delete</button>
 
-                                ?>
-                                <tr>
-                                    <th scope="row"><?php echo $urut++</th>
-                                    <td scope="row"><?php echo $nim</td>
-                                    <td scope="row"><?php echo $nama</td>
-                                    <td scope="row"><?php echo $alamat</td>
-                                    <td scope="row"><?php echo $fak</td>
-                                </tr>
-                                <?php
-                            }
+                                </td>
+                            </tr>
+                        <?php
+                        }
 
-                            ?>
-                        </tbody>
+                        ?>
+                    </tbody>
                     </thead>
                 </table>
 
